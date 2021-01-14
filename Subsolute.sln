@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Subsolute", "Subsolute\Subsolute.csproj", "{77544413-C980-405E-9D04-D3183C726440}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Subsolute.Test", "Subsolute.Test\Subsolute.Test.csproj", "{BA2133BE-6069-4EAC-A29A-81D4749D60BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{77544413-C980-405E-9D04-D3183C726440}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77544413-C980-405E-9D04-D3183C726440}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77544413-C980-405E-9D04-D3183C726440}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77544413-C980-405E-9D04-D3183C726440}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA2133BE-6069-4EAC-A29A-81D4749D60BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA2133BE-6069-4EAC-A29A-81D4749D60BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA2133BE-6069-4EAC-A29A-81D4749D60BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA2133BE-6069-4EAC-A29A-81D4749D60BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
