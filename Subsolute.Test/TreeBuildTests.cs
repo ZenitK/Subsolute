@@ -36,6 +36,8 @@ namespace Subsolute.Test
             var projectTree = _solutionBuilder.BuildProjectTree(ComplexSampleProjectPath);
 
             Assert.That(projectTree.Children.Count, Is.EqualTo(2));
+            
+            
         }
     }
 }

@@ -21,8 +21,8 @@
         <Link>SampleProjects/SampleProjectWithoutDependencies.csproj</Link>
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
-      <Content Include="..\SampleRootAppDep1Level1\SampleRootAppDep1Level1.csproj">
-        <Link>SampleProjects\SampleRootAppDep1Level1\SampleRootAppDep1Level1.csproj</Link>
+      <Content Include="..\SampleRootAppDep1Level1\SampleRootAppDep1Level1.tsproj">
+        <Link>SampleProjects/SampleRootAppDep1Level1/SampleRootAppDep1Level1.tsproj</Link>
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
       <Content Include="..\SampleRootAppDep2Level1\SampleRootAppDep2Level1.csproj">

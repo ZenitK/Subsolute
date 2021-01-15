@@ -80,8 +80,8 @@ namespace Subsolute
         private Project DeserializeProject(string projectPath)
         {
             using var fileReader = new FileStream(projectPath, FileMode.Open);
-
             var deserializedProject = _xmlSerializer.Deserialize(fileReader) as Project;
+            
             return deserializedProject;
         }
     }
