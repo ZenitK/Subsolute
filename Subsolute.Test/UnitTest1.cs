@@ -1,4 +1,7 @@
+using System.IO;
+using System.Threading.Tasks;
 using NUnit.Framework;
+using static Subsolute.SolutionBuilder;
 
 namespace Subsolute.Test
 {
@@ -10,9 +13,15 @@ namespace Subsolute.Test
         }
 
         [Test]
-        public void Test1()
+        public void Test_FileNotFoundException()
         {
-            Assert.Pass();
+            Assert.ThrowsAsync<FileNotFoundException>(() => Build("some illegal path"));
+        }
+        
+        [Test]
+        public async Task Test_SimpleProject()
+        {
+            await Build("./SampleProjects/SampleProjectWithoutDependencies.csproj");
         }
     }
 }
