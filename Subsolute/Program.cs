@@ -18,11 +18,13 @@ namespace Subsolute
             
             var projectPath = args[0];
             
-            var sb = new SolutionBuilder();
+            var sb = new TreeBuilder();
             var projectTree = sb.BuildProjectTree(projectPath);
 
             var treePrinter = new TreePrinter();
             treePrinter.PrintNode(projectTree);
+            
+            
         }
     }
 }

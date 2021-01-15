@@ -9,7 +9,7 @@ using static System.IO.Path;
 
 namespace Subsolute
 {
-    public class SolutionBuilder
+    public class TreeBuilder
     {
         private readonly XmlSerializer _xmlSerializer = new(typeof(Project));
 
