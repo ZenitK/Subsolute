@@ -13,7 +13,7 @@ namespace AsciiTreeDiagram
         private const string Cross = " ├─";
         private const string Corner = " └─";
         private const string Vertical = " │ ";
-        private const string Space = "   ";
+        private const string Space = "    ";
         
         internal void PrintNode(Node node, string indent = "")
         {
