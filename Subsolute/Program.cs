@@ -23,8 +23,6 @@ namespace Subsolute
 
             var treePrinter = new TreePrinter();
             treePrinter.PrintNode(projectTree);
-            
-            
         }
     }
 }

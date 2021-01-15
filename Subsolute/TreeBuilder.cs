@@ -13,7 +13,7 @@ namespace Subsolute
     {
         private readonly XmlSerializer _xmlSerializer = new(typeof(Project));
 
-        public Node BuildProjectTree(string projectPath)
+        public ProjectNode BuildProjectTree(string projectPath)
         {
             CheckIfFileExists(projectPath);
 
@@ -23,16 +23,14 @@ namespace Subsolute
             var children = ExtractChildren(deserializedProject, parentFullPath: projectPath);
             var projectGuid = ExtractProjectGuid(deserializedProject, projectPath);
 
-            return new Node
-            {
-                Name = projectName,
-                AbsolutePath = projectPath,
-                ProjectGuid = projectGuid,
-                Children = children
-            };
+            return new ProjectNode(
+                Name: projectName,
+                AbsolutePath: projectPath,
+                Children: children,
+                ProjectGuid: projectGuid);
         }
-        
-        private List<Node> ExtractChildren(Project deserializedProject, string parentFullPath) =>
+
+        private List<ProjectNode> ExtractChildren(Project deserializedProject, string parentFullPath) =>
             deserializedProject
                 .ItemGroup
                 .SelectMany(x => x.ProjectReference)
@@ -81,7 +79,7 @@ namespace Subsolute
         {
             using var fileReader = new FileStream(projectPath, FileMode.Open);
             var deserializedProject = _xmlSerializer.Deserialize(fileReader) as Project;
-            
+
             return deserializedProject;
         }
     }

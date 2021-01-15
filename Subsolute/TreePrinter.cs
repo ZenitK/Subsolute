@@ -15,22 +15,22 @@ namespace AsciiTreeDiagram
         private const string Vertical = " │ ";
         private const string Space = "    ";
         
-        internal void PrintNode(Node node, string indent = "")
+        internal void PrintNode(ProjectNode projectNode, string indent = "")
         {
-            Console.WriteLine(node.Name);
+            Console.WriteLine(projectNode.Name);
 
             // Loop through the children recursively, passing in the
             // indent, and the isLast parameter
-            var childrenCount = node.Children.Count;
+            var childrenCount = projectNode.Children.Count;
             for (var i = 0; i < childrenCount; i++)
             {
-                var child = node.Children[i];
+                var child = projectNode.Children[i];
                 var isLast = i == (childrenCount - 1);
                 PrintChildNode(child, indent, isLast);
             }
         }
 
-        private void PrintChildNode(Node node, string indent, bool isLast)
+        private void PrintChildNode(ProjectNode projectNode, string indent, bool isLast)
         {
             // Print the provided pipes/spaces indent
             Console.Write(indent);
@@ -49,7 +49,7 @@ namespace AsciiTreeDiagram
                 indent += Vertical;
             }
 
-            PrintNode(node, indent);
+            PrintNode(projectNode, indent);
         }
     }
 }
