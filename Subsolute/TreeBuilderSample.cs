@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace AsciiTreeDiagram
 {
-    public class Program
+    public class TreeBuilderSample
     {
         static void Main(string[] args)
         {
@@ -182,4 +182,5 @@ namespace AsciiTreeDiagram
                 }
             };
     }
+
 }
