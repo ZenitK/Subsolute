@@ -17,24 +17,19 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\SampleProjectWithoutDependencies\SampleProjectWithoutDependencies.csproj">
-        <Link>SampleProjects/SampleProjectWithoutDependencies.csproj</Link>
+      <Content Include="SampleProjects\SampleProjectWithoutDependencies\SampleProjectWithoutDependencies.csproj">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
-      <Content Include="..\SampleRootAppDep1Level1\SampleRootAppDep1Level1.tsproj">
-        <Link>SampleProjects/SampleRootAppDep1Level1/SampleRootAppDep1Level1.tsproj</Link>
+      <Content Include="SampleProjects\SampleRootAppDep1Level1\SampleRootAppDep1Level1.csproj">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
-      <Content Include="..\SampleRootAppDep2Level1\SampleRootAppDep2Level1.csproj">
-        <Link>SampleProjects\SampleRootAppDep2Level1\SampleRootAppDep2Level1.csproj</Link>
+      <Content Include="SampleProjects\SampleRootAppDep2Level1\SampleRootAppDep2Level1.csproj">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
-      <Content Include="..\SampleRootAppDep2Level2\SampleRootAppDep2Level2.csproj">
-        <Link>SampleProjects\SampleRootAppDep2Level2\SampleRootAppDep2Level2.csproj</Link>
+      <Content Include="SampleProjects\SampleRootAppDep2Level2\SampleRootAppDep2Level2.csproj">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
-      <Content Include="..\SampleRootApp\SampleRootApp.csproj">
-        <Link>SampleProjects\SampleRootApp\SampleRootApp.csproj</Link>
+      <Content Include="SampleProjects\SampleRootApp\SampleRootApp.csproj">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
     </ItemGroup>

@@ -6,8 +6,11 @@ namespace Subsolute.Test
     [TestFixture]
     public class TreeBuildTests
     {
-        private const string SimpleSampleProjectPath = "./SampleProjects/SampleProjectWithoutDependencies.csproj";
-        private const string ComplexSampleProjectPath = "./SampleProjects/SampleRootApp/SampleRootApp.csproj";
+        private const string SimpleSampleProjectPath = 
+            "./SampleProjects/SampleProjectWithoutDependencies/SampleProjectWithoutDependencies.csproj";
+        private const string ComplexSampleProjectPath =
+            "./SampleProjects/SampleRootApp/SampleRootApp.csproj";
+        
         private readonly SolutionBuilder _solutionBuilder = new();
 
         [Test]
