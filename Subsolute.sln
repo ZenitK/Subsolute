@@ -4,6 +4,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Subsolute", "Subsolute\Subs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Subsolute.Test", "Subsolute.Test\Subsolute.Test.csproj", "{BA2133BE-6069-4EAC-A29A-81D4749D60BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleProjectWithoutDependencies", "SampleProjectWithoutDependencies\SampleProjectWithoutDependencies.csproj", "{AD173AFB-6C08-408B-B0CA-D10F434A81B3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SampleProjects", "SampleProjects", "{F72C85B5-B20A-4280-A8DD-53F7ABF9F102}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTreeBuilder", "ProjectTreeBuilder\ProjectTreeBuilder.csproj", "{A2CAE077-01EC-416F-9BF7-477BD29D276E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +24,16 @@ Global
 		{BA2133BE-6069-4EAC-A29A-81D4749D60BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA2133BE-6069-4EAC-A29A-81D4749D60BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA2133BE-6069-4EAC-A29A-81D4749D60BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD173AFB-6C08-408B-B0CA-D10F434A81B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD173AFB-6C08-408B-B0CA-D10F434A81B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD173AFB-6C08-408B-B0CA-D10F434A81B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD173AFB-6C08-408B-B0CA-D10F434A81B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2CAE077-01EC-416F-9BF7-477BD29D276E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2CAE077-01EC-416F-9BF7-477BD29D276E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2CAE077-01EC-416F-9BF7-477BD29D276E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2CAE077-01EC-416F-9BF7-477BD29D276E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AD173AFB-6C08-408B-B0CA-D10F434A81B3} = {F72C85B5-B20A-4280-A8DD-53F7ABF9F102}
 	EndGlobalSection
 EndGlobal
