@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace AsciiTreeDiagram
 {
-    class Node
+    public class Node
     {
         public string Name { get; set; }
 
