@@ -1,22 +1,13 @@
 using System.IO;
 using System.Linq;
 using NUnit.Framework;
+using static Subsolute.Test.TestConstants;
 
 namespace Subsolute.Test
 {
     [TestFixture]
     public class TreeBuildTests
     {
-        private const string SimpleSampleProjectPath =
-            "./SampleProjects/SampleProjectWithoutDependencies/SampleProjectWithoutDependencies.csproj";
-
-        private const string ComplexSampleProjectPath =
-            "./SampleProjects/SampleRootApp/SampleRootApp.csproj";
-
-        private const string SampleRootAppDep1Level1 = "SampleRootAppDep1Level1.csproj";
-        private const string SampleRootAppDep2Level1 = "SampleRootAppDep2Level1.csproj";
-        private const string SampleRootAppDep2Level2 = "SampleRootAppDep2Level2.csproj";
-
         private readonly TreeBuilder _treeBuilder = new();
 
         [Test]

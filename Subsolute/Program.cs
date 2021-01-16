@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Threading.Tasks;
 using AsciiTreeDiagram;
 
 namespace Subsolute
 {
     public static class Program
     {
-        private const string Usage = "Usage: subsolute <project-path>";
+        private const string Usage = 
+            "Usage: subsolute -p <project-path> [--path <solution-path>] [--name <solution-name-without-extension>]";
 
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             if (args.Length == 0)
             {
@@ -25,7 +27,7 @@ namespace Subsolute
             treePrinter.PrintNode(projectTree);
 
             var solutionBuilder = new SolutionBuilder();
-            solutionBuilder.Build(projectTree);
+            await solutionBuilder.Build(projectTree, "test");
         }
     }
 }

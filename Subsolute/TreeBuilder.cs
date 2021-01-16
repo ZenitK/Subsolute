@@ -21,13 +21,11 @@ namespace Subsolute
             var deserializedProject = DeserializeProject(projectPath);
 
             var children = ExtractChildren(deserializedProject, parentFullPath: projectPath);
-            var projectGuid = ExtractProjectGuid(deserializedProject, projectPath);
 
             return new ProjectNode(
                 Name: projectName,
                 AbsolutePath: projectPath,
-                Children: children,
-                ProjectGuid: projectGuid);
+                Children: children);
         }
 
         private List<ProjectNode> ExtractChildren(Project deserializedProject, string parentFullPath) =>
@@ -47,23 +45,6 @@ namespace Subsolute
             {
                 throw new FileNotFoundException($"csproj file {projectPath} not found");
             }
-        }
-
-        private static string ExtractProjectGuid(Project deserializedProject, string projectPath)
-        {
-            var guids = deserializedProject
-                .PropertyGroup
-                .Select(x => x.ProjectGuid)
-                .Where(x => !string.IsNullOrWhiteSpace(x))
-                .ToList();
-
-            if (guids.Count > 1)
-            {
-                throw new Exception($"The project {projectPath} seems to have multiple Guids " +
-                                    $"[{string.Join(",", guids)}]");
-            }
-
-            return guids.SingleOrDefault();
         }
 
         private static string FindChildFullPath(string parentFullPath, string childPath)

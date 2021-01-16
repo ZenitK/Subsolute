@@ -17,14 +17,16 @@ namespace AsciiTreeDiagram
         
         internal void PrintNode(ProjectNode projectNode, string indent = "")
         {
-            Console.WriteLine(projectNode.Name);
+            var (name, _, projectNodes) = projectNode;
+            
+            Console.WriteLine(name);
 
             // Loop through the children recursively, passing in the
             // indent, and the isLast parameter
-            var childrenCount = projectNode.Children.Count;
+            var childrenCount = projectNodes.Count;
             for (var i = 0; i < childrenCount; i++)
             {
-                var child = projectNode.Children[i];
+                var child = projectNodes[i];
                 var isLast = i == (childrenCount - 1);
                 PrintChildNode(child, indent, isLast);
             }
