@@ -21,19 +21,6 @@ namespace Subsolute
             }
 
             await CreateSolutionIfNotExists(solutionName, solutionPath);
-            // var solutionGuid = Guid.NewGuid().ToString("B");
-            //
-            // var slnContentBuilder = new StringBuilder();
-            //
-            // slnContentBuilder.AppendLine("Microsoft Visual Studio Solution File, Format Version 12.00");
-            // slnContentBuilder.AppendLine();
-            //
-            // var projectDeclarations = uniqueProjects
-            //     .Select(project => BuildProjectDeclaration(project, solutionGuid));
-            //
-            // slnContentBuilder.AppendLine(string.Join("\n", projectDeclarations));
-            //
-            // Console.WriteLine(slnContentBuilder.ToString());
         }
 
         private static async Task CreateSolutionIfNotExists(string solutionName, string solutionPath = ".")

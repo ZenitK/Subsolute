@@ -1,33 +1,56 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AsciiTreeDiagram;
+using CommandLine;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Subsolute
 {
+    public class Options
+    {
+        [Option(
+            'p',
+            "project",
+            Required = true,
+            HelpText = "Full path to the csproj|fsproj file.")]
+        public string ProjectPath { get; set; }
+
+        [Option(
+            "solution-path",
+            Required = false,
+            HelpText = "Full path for the new solution file. If not set it will be the current execution directory.")]
+        public string SolutionPath { get; set; }
+
+        [Option(
+            'n',
+            "solution-name",
+            Required = true,
+            HelpText = "Solution name without the file extension")]
+        public string SolutionName { get; set; }
+    }
+
     public static class Program
     {
-        private const string Usage = 
-            "Usage: subsolute -p <project-path> [--path <solution-path>] [--name <solution-name-without-extension>]";
-
         public static async Task Main(string[] args)
         {
-            if (args.Length == 0)
+            var parser = new Parser(config =>
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(Usage);
-                Environment.Exit(-1); 
-            }
-            
-            var projectPath = args[0];
-            
-            var sb = new TreeBuilder();
-            var projectTree = sb.BuildProjectTree(projectPath);
+                config.AutoVersion = false;
+                config.AutoHelp = true;
+                config.HelpWriter = Console.Out;
+            });
 
-            var treePrinter = new TreePrinter();
-            treePrinter.PrintNode(projectTree);
+            var parserResult = parser.ParseArguments<Options>(args);
 
-            var solutionBuilder = new SolutionBuilder();
-            await solutionBuilder.Build(projectTree, "test");
+            await parserResult.WithParsedAsync(async o =>
+            {
+                var treeBuilder = new TreeBuilder();
+                var projectTree = treeBuilder.BuildProjectTree(o.ProjectPath);
+                var treePrinter = new TreePrinter();
+                treePrinter.PrintNode(projectTree);
+                var solutionBuilder = new SolutionBuilder();
+                await solutionBuilder.Build(projectTree, o.SolutionName, o.SolutionPath);
+            });
         }
     }
 }
