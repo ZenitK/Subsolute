@@ -16,14 +16,14 @@ namespace Subsolute
         public string ProjectPath { get; set; }
 
         [Option(
-            "solution-path",
+            "sln-path",
             Required = false,
             HelpText = "Full path for the new solution file. If not set it will be the current execution directory.")]
         public string SolutionPath { get; set; }
 
         [Option(
             'n',
-            "solution-name",
+            "sln-name",
             Required = true,
             HelpText = "Solution name without the file extension")]
         public string SolutionName { get; set; }

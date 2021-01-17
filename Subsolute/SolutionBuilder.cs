@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,76 +14,88 @@ namespace Subsolute
         {
             var uniqueProjects = ExtractAllUniqueProjects(root);
 
-            Console.WriteLine($"Total projects: {uniqueProjects.Count}");
+            Console.WriteLine($"Total projects: {uniqueProjects.Count()}");
 
-            foreach (var allProject in uniqueProjects.OrderBy(p => p.Name))
+            foreach (var project in uniqueProjects.OrderBy(p => p))
             {
-                Console.WriteLine("\t-" + allProject.Name);
+                Console.WriteLine("\t-" + project);
             }
 
             await CreateSolutionIfNotExists(solutionName, solutionPath);
+
+            var projectListArgument = string.Join(" ", uniqueProjects);
+
+            await ExecuteDotnetProcess(solutionPath, $"sln add {projectListArgument}");
         }
 
         private static async Task CreateSolutionIfNotExists(string solutionName, string solutionPath = ".")
         {
-            if (!File.Exists(Path.Combine(solutionPath, $"{solutionName}.sln")))
+            var fullSolutionPath = Path.Combine(solutionPath, $"{solutionName}.sln");
+            if (!File.Exists(fullSolutionPath))
             {
                 await CreateSolution(solutionName, solutionPath);
             }
             else
             {
-                Console.WriteLine("Solution already exists. Skipping.");
+                var foreground = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"Solution at {solutionPath} already exists. Skipping.");
+                Console.ForegroundColor = foreground;
             }
         }
-        
-        private static async Task CreateSolution(string filename, string solutionPath)
+
+        private static Task CreateSolution(string filename, string solutionPath)
         {
-            var arguments = string.IsNullOrWhiteSpace(solutionPath) ?
-                "new sln" :
-                $"new sln --name {filename}";
-            
-            var startInfo = new System.Diagnostics.ProcessStartInfo
+            var arguments = string.IsNullOrWhiteSpace(solutionPath) ? "new sln" : $"new sln --name {filename}";
+
+            return ExecuteDotnetProcess(solutionPath, arguments);
+        }
+
+        private static async Task<Process> ExecuteDotnetProcess(string solutionPath, string arguments)
+        {
+            const string command = "dotnet";
+            var workingDirectory = solutionPath ?? ".";
+
+            var startInfo = new ProcessStartInfo
             {
-                WorkingDirectory = solutionPath ?? ".",
-                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                FileName = "dotnet",
+                WorkingDirectory = workingDirectory,
+                WindowStyle = ProcessWindowStyle.Hidden,
+                FileName = command,
                 Arguments = arguments
             };
-            
-            var process = new System.Diagnostics.Process {StartInfo = startInfo};
+
+            var process = new Process {StartInfo = startInfo};
             process.Start();
             await process.WaitForExitAsync();
 
             if (process.ExitCode != 0)
             {
-                var message = $"Failed to create solution {filename}, received -1 exit code " +
-                             $"from `dotnet new sln --name {filename}` in directory {solutionPath}";
-
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(message);
-                Environment.Exit(process.ExitCode);
+                throw new Exception(
+                    $"received exit code {process.ExitCode} for command `{command} {arguments}` " +
+                    $"in working directory `{workingDirectory}`");
             }
+            
+            return process;
         }
 
         /// <summary>
         /// Many projects like core libraries repeat multiple times, those we don't need to import multiple times 
         /// </summary>
-        private static IReadOnlySet<Project> ExtractAllUniqueProjects(ProjectNode root)
+        private static IReadOnlyList<string> ExtractAllUniqueProjects(ProjectNode root)
         {
             var flatTree = Flatten(root);
 
             return flatTree
-                .Select(x => new Project(x.Name, x.AbsolutePath))
-                .ToHashSet();
+                .Select(x => x.AbsolutePath)
+                .Distinct()
+                .ToList();
         }
 
-        private static IEnumerable<ProjectNode> Flatten(ProjectNode projectNode) =>
-            projectNode
-                .Children
-                .SelectMany(Flatten)
-                .Concat(new[] {projectNode});
-
-        // Using a new data structure in order to have a proper hash value, the children's list is in the way otherwise
-        private record Project(string Name, string AbsolutePath);
+        private static IEnumerable<ProjectNode> Flatten(ProjectNode projectNode)
+        {
+            var nodes = new List<ProjectNode> {projectNode};
+            nodes.AddRange(projectNode.Children?.SelectMany(Flatten) ?? Array.Empty<ProjectNode>());
+            return nodes;
+        }
     }
 }

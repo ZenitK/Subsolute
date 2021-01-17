@@ -47,7 +47,7 @@ namespace Subsolute.Test
         [Test]
         public async Task Test_CreateBasicSolutionWithOneProject()
         {
-            var projectNode = new ProjectNode("SampleProject", SimpleSampleProjectPath);
+            var projectNode = new ProjectNode("SampleProject", Path.GetFullPath(SimpleSampleProjectPath));
             await _builder.Build(projectNode, _solutionName, TestSolutionDir);
 
             Assert.That(GetSolutionContent(), Contains.Substring(SimpleSampleProjectName) );
