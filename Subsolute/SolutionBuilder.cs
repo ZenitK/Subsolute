@@ -46,7 +46,7 @@ namespace Subsolute
 
         private static Task CreateSolution(string filename, string solutionPath)
         {
-            var arguments = string.IsNullOrWhiteSpace(solutionPath) ? "new sln" : $"new sln --name {filename}";
+            var arguments = string.IsNullOrWhiteSpace(filename) ? "new sln" : $"new sln --name {filename}";
 
             return ExecuteDotnetProcess(solutionPath, arguments);
         }

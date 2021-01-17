@@ -24,8 +24,9 @@ namespace Subsolute
         [Option(
             'n',
             "sln-name",
-            Required = true,
-            HelpText = "Solution name without the file extension")]
+            Required = false,
+            HelpText = "Solution name without the file extension. " +
+                       "By default, the solution name is the same as the working directory name.")]
         public string SolutionName { get; set; }
     }
 
