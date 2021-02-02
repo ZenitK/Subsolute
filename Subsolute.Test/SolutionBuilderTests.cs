@@ -50,7 +50,20 @@ namespace Subsolute.Test
             var projectNode = new ProjectNode("SampleProject", Path.GetFullPath(SimpleSampleProjectPath));
             await _builder.Build(projectNode, _solutionName, TestSolutionDir);
 
-            Assert.That(GetSolutionContent(), Contains.Substring(SimpleSampleProjectName) );
+            Assert.That(GetSolutionContent(), Contains.Substring(SimpleSampleProjectName));
+        }
+
+        [Test]
+        public async Task Test_CreateSolutionWithMultipleProjects()
+        {
+            var firstProject = new ProjectNode("FirstProject", Path.GetFullPath(SimpleSampleProjectPath));
+            var secondProject = new ProjectNode("SecondProject", Path.GetFullPath(ComplexSampleProjectPath));
+
+            await _builder.Build(new[] {firstProject, secondProject}, _solutionName, TestSolutionDir);
+
+            var solutionContent = GetSolutionContent();
+            Assert.That(solutionContent, Contains.Substring("SampleProjectWithoutDependencies"));
+            Assert.That(solutionContent, Contains.Substring("SampleRootApp"));
         }
 
         private static string GetSolutionContent(string fullSolutionPath) => File.ReadAllText(fullSolutionPath);

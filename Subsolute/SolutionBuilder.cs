@@ -4,24 +4,21 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using AsciiTreeDiagram;
 
 namespace Subsolute
 {
     public class SolutionBuilder
     {
-        public async Task Build(ProjectNode root, string solutionName, string solutionPath)
+        public Task Build(ProjectNode root, string solutionName, string solutionPath) =>
+            Build(new[] {root}, solutionName, solutionPath);
+        
+        public async Task Build(IEnumerable<ProjectNode> roots, string solutionName, string solutionPath)
         {
-            var uniqueProjects = ExtractAllUniqueProjects(root);
+            var uniqueProjects = roots.SelectMany(ExtractAllUniqueProjects).Distinct().ToList();
 
-            Console.WriteLine($"Total projects: {uniqueProjects.Count}");
+            PrintStatus(uniqueProjects);
 
-            foreach (var project in uniqueProjects.OrderBy(p => p))
-            {
-                Console.WriteLine("\t-" + project);
-            }
-
-            var finalSolutionPath = ResolveSolutionPath(root, solutionPath);
+            var finalSolutionPath = ResolveSolutionPath(solutionPath);
             
             await CreateSolutionIfNotExists(solutionName, finalSolutionPath);
 
@@ -30,8 +27,18 @@ namespace Subsolute
             await ExecuteDotnetProcess(finalSolutionPath, $"sln add {projectListArgument}");
         }
 
-        private static string ResolveSolutionPath(ProjectNode root, string solutionPath) => 
-            string.IsNullOrWhiteSpace(solutionPath) ? Path.GetDirectoryName(root.AbsolutePath) : solutionPath;
+        private static void PrintStatus(List<string> uniqueProjects)
+        {
+            Console.WriteLine($"Total projects: {uniqueProjects.Count}");
+
+            foreach (var project in uniqueProjects.OrderBy(p => p))
+            {
+                Console.WriteLine("\t-" + project);
+            }
+        }
+
+        private static string ResolveSolutionPath(string solutionPath) => 
+            string.IsNullOrWhiteSpace(solutionPath) ? Directory.GetCurrentDirectory() : solutionPath;
 
         private static async Task CreateSolutionIfNotExists(string solutionName, string solutionPath)
         {
