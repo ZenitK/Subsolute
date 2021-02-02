@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace AsciiTreeDiagram
+namespace Subsolute
 {
     public record ProjectNode(string Name, string AbsolutePath, List<ProjectNode> Children = null);
 }

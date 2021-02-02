@@ -10,28 +10,34 @@ namespace Subsolute
 {
     public class SolutionBuilder
     {
-        public async Task Build(ProjectNode root, string solutionName = "", string solutionPath = ".")
+        public async Task Build(ProjectNode root, string solutionName, string solutionPath)
         {
             var uniqueProjects = ExtractAllUniqueProjects(root);
 
-            Console.WriteLine($"Total projects: {uniqueProjects.Count()}");
+            Console.WriteLine($"Total projects: {uniqueProjects.Count}");
 
             foreach (var project in uniqueProjects.OrderBy(p => p))
             {
                 Console.WriteLine("\t-" + project);
             }
 
-            await CreateSolutionIfNotExists(solutionName, solutionPath);
+            var finalSolutionPath = ResolveSolutionPath(root, solutionPath);
+            
+            await CreateSolutionIfNotExists(solutionName, finalSolutionPath);
 
             var projectListArgument = string.Join(" ", uniqueProjects);
 
-            await ExecuteDotnetProcess(solutionPath, $"sln add {projectListArgument}");
+            await ExecuteDotnetProcess(finalSolutionPath, $"sln add {projectListArgument}");
         }
 
-        private static async Task CreateSolutionIfNotExists(string solutionName, string solutionPath = ".")
+        private static string ResolveSolutionPath(ProjectNode root, string solutionPath) => 
+            string.IsNullOrWhiteSpace(solutionPath) ? Path.GetDirectoryName(root.AbsolutePath) : solutionPath;
+
+        private static async Task CreateSolutionIfNotExists(string solutionName, string solutionPath)
         {
             var fullSolutionPath = Path.Combine(solutionPath, $"{solutionName}.sln");
-            if (!File.Exists(fullSolutionPath))
+            
+            if (!File.Exists(fullSolutionPath) || Directory.Exists(fullSolutionPath))
             {
                 await CreateSolution(solutionName, solutionPath);
             }

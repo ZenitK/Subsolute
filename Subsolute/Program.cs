@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AsciiTreeDiagram;
 using CommandLine;
@@ -6,6 +7,8 @@ using CommandLine;
 
 namespace Subsolute
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
+    // Used implicitly
     public class Options
     {
         [Option(
@@ -13,12 +16,13 @@ namespace Subsolute
             "project",
             Required = true,
             HelpText = "Full path to the csproj|fsproj file.")]
-        public string ProjectPath { get; set; }
+        public string[] ProjectPaths { get; set; }
 
         [Option(
             "sln-path",
             Required = false,
-            HelpText = "Full path for the new solution file. If not set it will be the current execution directory.")]
+            HelpText = "Full path for the new solution file. If not set it will be the current execution directory.",
+            Default = null)]
         public string SolutionPath { get; set; }
 
         [Option(
@@ -28,6 +32,13 @@ namespace Subsolute
             HelpText = "Solution name without the file extension. " +
                        "By default, the solution name is the same as the working directory name.")]
         public string SolutionName { get; set; }
+
+        [Option(
+            'v',
+            "verbose",
+            Required = false,
+            HelpText = "Print project dependency trees")]
+        public bool IsVerbose => true;
     }
 
     public static class Program
@@ -46,11 +57,20 @@ namespace Subsolute
             await parserResult.WithParsedAsync(async o =>
             {
                 var treeBuilder = new TreeBuilder();
-                var projectTree = treeBuilder.BuildProjectTree(o.ProjectPath);
-                var treePrinter = new TreePrinter();
-                treePrinter.PrintNode(projectTree);
-                var solutionBuilder = new SolutionBuilder();
-                await solutionBuilder.Build(projectTree, o.SolutionName, o.SolutionPath);
+                var projectTrees = treeBuilder.BuildProjectTree(o.ProjectPaths).ToList();
+
+                if (o.IsVerbose)
+                {
+                    var treePrinter = new TreePrinter();
+
+                    foreach (var projectTree in projectTrees)
+                    {
+                        treePrinter.PrintNode(projectTree);
+                    }
+                }
+
+                var builder = new SolutionBuilder();
+                await builder.Build(projectTrees.First(), o.SolutionName, o.SolutionPath);
             });
         }
     }
