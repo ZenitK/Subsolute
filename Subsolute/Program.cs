@@ -13,9 +13,9 @@ namespace Subsolute
     {
         [Option(
             'p',
-            "project",
+            "projects",
             Required = true,
-            HelpText = "Full path to the csproj|fsproj file.")]
+            HelpText = "Full path to csproj|fsproj files.")]
         public string[] ProjectPaths { get; set; }
 
         [Option(
