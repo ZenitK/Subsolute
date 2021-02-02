@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
@@ -13,19 +14,22 @@ namespace Subsolute
     {
         private readonly XmlSerializer _xmlSerializer = new(typeof(Project));
 
-        public ProjectNode BuildProjectTree(string projectPath)
+        public IEnumerable<ProjectNode> BuildProjectTree(params string[] projectPaths)
         {
-            CheckIfFileExists(projectPath);
+            foreach (var projectPath in projectPaths)
+            {
+                CheckIfFileExists(projectPath);
 
-            var projectName = GetFileName(projectPath);
-            var deserializedProject = DeserializeProject(projectPath);
+                var projectName = GetFileName(projectPath);
+                var deserializedProject = DeserializeProject(projectPath);
 
-            var children = ExtractChildren(deserializedProject, parentFullPath: projectPath);
+                var children = ExtractChildren(deserializedProject, parentFullPath: projectPath);
 
-            return new ProjectNode(
-                Name: projectName,
-                AbsolutePath: projectPath,
-                Children: children);
+                yield return new ProjectNode(
+                    Name: projectName,
+                    AbsolutePath: projectPath,
+                    Children: children);
+            }
         }
 
         private List<ProjectNode> ExtractChildren(Project deserializedProject, string parentFullPath) =>
@@ -37,6 +41,7 @@ namespace Subsolute
                     var fullPath = FindChildFullPath(parentFullPath, x.Include);
                     return BuildProjectTree(fullPath);
                 })
+                .SelectMany(x => x)
                 .ToList();
 
         private static void CheckIfFileExists(string projectPath)
