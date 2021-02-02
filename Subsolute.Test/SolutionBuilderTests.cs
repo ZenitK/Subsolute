@@ -1,6 +1,5 @@
 using System.IO;
 using System.Threading.Tasks;
-using AsciiTreeDiagram;
 using NUnit.Framework;
 using static Subsolute.Test.TestConstants;
 
