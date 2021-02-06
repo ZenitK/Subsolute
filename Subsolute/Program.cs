@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CommandLine;
@@ -15,7 +16,7 @@ namespace Subsolute
             "projects",
             Required = true,
             HelpText = "Full path to csproj|fsproj files.")]
-        public string[] ProjectPaths { get; set; }
+        public IEnumerable<string> ProjectPaths { get; set; }
 
         [Option(
             "sln-path",
@@ -69,7 +70,7 @@ namespace Subsolute
                 }
 
                 var builder = new SolutionBuilder();
-                await builder.Build(projectTrees.First(), o.SolutionName, o.SolutionPath);
+                await builder.Build(projectTrees, o.SolutionName, o.SolutionPath);
             });
         }
     }

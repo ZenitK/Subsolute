@@ -11,7 +11,7 @@ namespace Subsolute
     {
         private readonly XmlSerializer _xmlSerializer = new(typeof(Project));
 
-        public IEnumerable<ProjectNode> BuildProjectTree(params string[] projectPaths)
+        public IEnumerable<ProjectNode> BuildProjectTree(IEnumerable<string> projectPaths)
         {
             foreach (var projectPath in projectPaths)
             {
@@ -36,7 +36,7 @@ namespace Subsolute
                 .Select(x =>
                 {
                     var fullPath = FindChildFullPath(parentFullPath, x.Include);
-                    return BuildProjectTree(fullPath);
+                    return BuildProjectTree(new[] {fullPath});
                 })
                 .SelectMany(x => x)
                 .ToList();
