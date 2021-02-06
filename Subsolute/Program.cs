@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using AsciiTreeDiagram;
 using CommandLine;
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 

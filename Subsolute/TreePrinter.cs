@@ -1,12 +1,11 @@
 using System;
-using Subsolute;
 
 /*
  * Code shamelessly taken with small adjustments from
  * https://github.com/andrewlock/blog-examples/tree/master/AsciiTreeDiagram/AsciiTreeDiagram.
  * Described in Andrew Lock's blog post https://andrewlock.net/creating-an-ascii-art-tree-in-csharp/
  */
-namespace AsciiTreeDiagram
+namespace Subsolute
 {
     public class TreePrinter
     {

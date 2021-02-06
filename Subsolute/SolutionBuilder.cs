@@ -24,8 +24,16 @@ namespace Subsolute
 
             var projectListArgument = string.Join(" ", uniqueProjects);
 
-            await ExecuteDotnetProcess(finalSolutionPath, $"sln add {projectListArgument}");
+            await AddProjectsToSolution(solutionName, finalSolutionPath, projectListArgument);
         }
+
+        private static Task AddProjectsToSolution(
+            string solutionName, 
+            string finalSolutionPath,
+            string projectListArgument) =>
+            ExecuteDotnetProcess(
+                finalSolutionPath,
+                $"sln {solutionName}.sln add {projectListArgument}");
 
         private static void PrintStatus(List<string> uniqueProjects)
         {
@@ -42,8 +50,8 @@ namespace Subsolute
 
         private static async Task CreateSolutionIfNotExists(string solutionName, string solutionPath)
         {
-            var fullSolutionPath = Path.Combine(solutionPath, $"{solutionName}.sln");
-            
+            var fullSolutionPath = GetFullSolutionPathWithName(solutionName, solutionPath);
+
             if (!File.Exists(fullSolutionPath) || Directory.Exists(fullSolutionPath))
             {
                 await CreateSolution(solutionName, solutionPath);
@@ -55,6 +63,12 @@ namespace Subsolute
                 Console.WriteLine($"Solution at {solutionPath} already exists. Skipping.");
                 Console.ForegroundColor = foreground;
             }
+        }
+
+        private static string GetFullSolutionPathWithName(string solutionName, string solutionPath)
+        {
+            var fullSolutionPath = Path.Combine(solutionPath, $"{solutionName}.sln");
+            return fullSolutionPath;
         }
 
         private static Task CreateSolution(string filename, string solutionPath)
@@ -74,18 +88,22 @@ namespace Subsolute
                 WorkingDirectory = workingDirectory,
                 WindowStyle = ProcessWindowStyle.Hidden,
                 FileName = command,
-                Arguments = arguments
+                Arguments = arguments,
+                RedirectStandardError = true
             };
 
             var process = new Process {StartInfo = startInfo};
             process.Start();
+            
+            var error = await process.StandardError.ReadToEndAsync();
             await process.WaitForExitAsync();
 
             if (process.ExitCode != 0)
             {
+                
                 throw new Exception(
                     $"received exit code {process.ExitCode} for command `{command} {arguments}` " +
-                    $"in working directory `{workingDirectory}`");
+                    $"in working directory `{workingDirectory}` \nerror: {error}");
             }
             
             return process;

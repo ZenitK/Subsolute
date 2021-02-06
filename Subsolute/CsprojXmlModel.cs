@@ -4,10 +4,10 @@
     http://www.apache.org/licenses/LICENSE-2.0
 */
 
-using System.Xml.Serialization;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
-namespace Xml2CSharp
+namespace Subsolute
 {
     [XmlRoot(ElementName = "Configuration")]
     public class Configuration

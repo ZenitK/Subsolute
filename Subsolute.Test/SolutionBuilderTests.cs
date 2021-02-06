@@ -8,7 +8,7 @@ namespace Subsolute.Test
     [TestFixture]
     public class SolutionBuilderTests
     {
-        private const string TestSolutionDir = "./TestSolutions";
+        private const string TestSolutionDir = "TestSolutions";
         private readonly SolutionBuilder _builder = new();
         private string _solutionName;
 
@@ -27,20 +27,6 @@ namespace Subsolute.Test
         public void Setup()
         {
             _solutionName = TestContext.CurrentContext.Test.Name;
-        }
-
-        [Test]
-        public async Task Test_CreateBasicSolution()
-        {
-            await _builder.Build(DummyProjectNode, _solutionName, TestSolutionDir);
-
-            var fullSolutionPath = GetFullSolutionPath(_solutionName);
-
-            Assert.That(File.Exists(fullSolutionPath));
-
-            var solutionContent = GetSolutionContent(fullSolutionPath);
-            Assert.That(solutionContent, Contains.Substring("Microsoft Visual Studio"));
-            Assert.That(solutionContent, Contains.Substring("Global"));
         }
 
         [Test]
@@ -65,13 +51,12 @@ namespace Subsolute.Test
             Assert.That(solutionContent, Contains.Substring("SampleRootApp"));
         }
 
-        private static string GetSolutionContent(string fullSolutionPath) => File.ReadAllText(fullSolutionPath);
         private string GetSolutionContent() => File.ReadAllText(GetFullSolutionPath(_solutionName));
 
         private static string GetFullSolutionPath(string solutionName) =>
             Path.Combine(TestSolutionDir, $"{solutionName}.sln");
 
-        private static ProjectNode DummyProjectNode => new("Whatever", string.Empty);
+        private static ProjectNode DummyProjectNode => new("Whatever", "Whatever.csproj");
 
         [OneTimeTearDown]
         public void TearDown()
