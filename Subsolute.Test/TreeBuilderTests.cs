@@ -2,6 +2,7 @@ using System.IO;
 using System.Linq;
 using NUnit.Framework;
 using static Subsolute.Test.TestConstants;
+
 // ReSharper disable IteratorMethodResultIsIgnored
 // ReSharper disable ReturnValueOfPureMethodIsNotUsed
 
@@ -13,25 +14,29 @@ namespace Subsolute.Test
         private readonly TreeBuilder _treeBuilder = new();
 
         [Test]
-        public void Test_FileNotFoundException() => 
-            Assert.Throws<FileNotFoundException>(() => _treeBuilder.BuildProjectTree("some illegal path").Single());
+        public void Test_FileNotFoundException() =>
+            Assert.Throws<FileNotFoundException>(() => 
+                _treeBuilder.BuildProjectTree(new[] {"some illegal path"}).Single());
 
         [Test]
-        public void Test_NoExceptionIsThrown() => 
-            Assert.DoesNotThrow(() => _treeBuilder.BuildProjectTree(SimpleSampleProjectPath));
+        public void Test_NoExceptionIsThrown() =>
+            Assert.DoesNotThrow(() => _treeBuilder.BuildProjectTree(new[] {SimpleSampleProjectPath}));
 
         [Test]
         public void Test_ProjectWithoutDependencies()
         {
-            var projectTree = _treeBuilder.BuildProjectTree(SimpleSampleProjectPath).Single();
+            var projectTree = _treeBuilder.BuildProjectTree(new[] {SimpleSampleProjectPath}).Single();
 
             Assert.That(projectTree.Name, Is.EqualTo("SampleProjectWithoutDependencies.csproj"));
         }
-        
+
         [Test]
         public void Test_MultipleProjects()
         {
-            var projectTrees = _treeBuilder.BuildProjectTree(SimpleSampleProjectPath, ComplexSampleProjectPath).ToList();
+            var projectTrees = _treeBuilder
+                .BuildProjectTree(new[] {SimpleSampleProjectPath, ComplexSampleProjectPath})
+                .ToList();
+
             Assert.That(projectTrees.Count, Is.EqualTo(2));
             CollectionAssert.AllItemsAreNotNull(projectTrees);
         }
@@ -39,7 +44,7 @@ namespace Subsolute.Test
         [Test]
         public void Test_ProjectWithDependencies_AllLevels()
         {
-            var (_, _, projectNodes) = _treeBuilder.BuildProjectTree(ComplexSampleProjectPath).Single();
+            var (_, _, projectNodes) = _treeBuilder.BuildProjectTree(new[] {ComplexSampleProjectPath}).Single();
 
             Assert.That(projectNodes.Count, Is.EqualTo(2));
 
